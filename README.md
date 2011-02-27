@@ -1,4 +1,5 @@
-GOAL
+Goal
+----
 
 * GWT Library for other applications
 * Create an abstraction on shapes using the beginPath() function
@@ -6,11 +7,13 @@ GOAL
 * Create an API that would be useful for game programming
 * Provide functionality that gives advantages over simply using SVG for vector graphics
 
-NOT GOALS
+Not Goals
+---------
 
 * Create a tool that will work in all browsers - you need the 'canvas' element getContext to function
 
-INSTALL
+Install
+-------
 
 1. Obtain a copy of Java 1.6 SDK, Maven 2.2+
 2. Create the jar in the target directory by typing `mvn package`
