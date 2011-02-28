@@ -24,8 +24,7 @@ public interface Graphic
 
         /**
          * Remove all transforms and other settings performed during this draw
-         * operation. This is most useful if you want to remove some transforms
-         * before stroking or filling a shape.
+         * operation.
          */
         public void revertAttributes();
 

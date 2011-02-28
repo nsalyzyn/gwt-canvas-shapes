@@ -1,6 +1,8 @@
 package com.nsalz.gwt.canvas.create.client.ui;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.RequiresResize;
@@ -70,9 +72,40 @@ public class ShapeCanvas extends FocusWidget implements RequiresResize
     
     @Override
     public void onResize() {
+        int x = getOffsetWidth();
+        int y = getOffsetHeight();
+        getCanvasElement().setWidth(x);
+        getCanvasElement().setHeight(y);
         drawingBoard.onResize();
     }
     
+    @Override
+    public void setWidth(String width)
+    {
+        super.setWidth(width);
+        onResize();
+    }
+
+    @Override
+    public void setHeight(String height)
+    {
+        super.setHeight(height);
+        onResize();
+    }
+    
+    @Override
+    public void onLoad()
+    {
+        super.onLoad();
+        Scheduler.get().scheduleDeferred(new ScheduledCommand(){
+            @Override
+            public void execute()
+            {
+                onResize();
+            }
+        });
+    }
+
     private CanvasElement getCanvasElement()
     {
         return getElement().cast();
