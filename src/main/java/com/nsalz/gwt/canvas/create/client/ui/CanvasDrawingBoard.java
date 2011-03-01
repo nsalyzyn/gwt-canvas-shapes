@@ -26,9 +26,9 @@ class CanvasDrawingBoard extends AbstractDrawingBoard
 
 
     @Override
-    public void repaint()
+    protected void doRepaint()
     {
         getContext().clearRect(0, 0, canvasElement.getWidth(), canvasElement.getHeight());
-        super.repaint();
+        super.doRepaint();
     }
 }

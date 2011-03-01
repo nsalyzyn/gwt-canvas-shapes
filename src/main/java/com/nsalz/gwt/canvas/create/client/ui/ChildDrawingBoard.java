@@ -1,15 +1,8 @@
 package com.nsalz.gwt.canvas.create.client.ui;
 
-import com.nsalz.gwt.canvas.create.client.tools.CanvasImage;
 import com.nsalz.gwt.canvas.create.client.tools.DrawingBoard;
-import com.nsalz.gwt.canvas.create.client.tools.FillStyle;
-import com.nsalz.gwt.canvas.create.client.tools.LineStyle;
-import com.nsalz.gwt.canvas.create.client.tools.Path;
-import com.nsalz.gwt.canvas.create.client.tools.ShadowAttributes;
 import com.nsalz.gwt.canvas.create.client.tools.Shape;
-import com.nsalz.gwt.canvas.create.client.tools.TextAttributes;
 import com.nsalz.gwt.canvas.create.client.tools.Transform;
-import com.nsalz.gwt.canvas.create.client.tools.Graphic.CompositeOperation;
 
 class ChildDrawingBoard extends AbstractDrawingBoard
 {
