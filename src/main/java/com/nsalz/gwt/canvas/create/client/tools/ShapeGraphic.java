@@ -19,7 +19,7 @@ public class ShapeGraphic implements Graphic
     @Override
     public void draw(GraphicTool tool)
     {
-        tool.strokeShape(shape);
+        tool.stroke(shape);
     }
 
 }

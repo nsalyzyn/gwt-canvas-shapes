@@ -12,8 +12,9 @@ import com.nsalz.gwt.canvas.create.client.tools.Graphic.CompositeOperation;
 import com.nsalz.gwt.canvas.create.client.tools.Graphic.GraphicTool;
 import com.nsalz.gwt.canvas.create.client.tools.Path.PathTool;
 import com.nsalz.gwt.canvas.create.client.tools.Shape.ShapeTool;
+import com.nsalz.gwt.canvas.create.client.tools.Transform.TransformTool;
 
-class ContextDrawingTool implements GraphicTool, ShapeTool, PathTool
+class ContextDrawingTool implements GraphicTool, ShapeTool, PathTool, TransformTool
 {
     private final Context2d context;
 
@@ -48,14 +49,14 @@ class ContextDrawingTool implements GraphicTool, ShapeTool, PathTool
     }
 
     @Override
-    public void fillShape(Shape shape)
+    public void fill(Shape shape)
     {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void fillText(String text)
+    public void fill(String text)
     {
         // TODO Auto-generated method stub
         
@@ -111,7 +112,7 @@ class ContextDrawingTool implements GraphicTool, ShapeTool, PathTool
     }
 
     @Override
-    public void strokeShape(Shape shape)
+    public void stroke(Shape shape)
     {
         context.beginPath();
         shape.applyShape(this);
@@ -119,12 +120,43 @@ class ContextDrawingTool implements GraphicTool, ShapeTool, PathTool
     }
 
     @Override
-    public void strokeText(String text)
+    public void stroke(String text)
     {
         // TODO Auto-generated method stub
         
     }
-    
+
+
+    @Override
+    public void fill(Shape shape, Transform transform)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void fillWithBaseTransform(Shape shape)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void stroke(Shape shape, Transform transform)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void strokeWithBaseTransform(Shape shape)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+
     /*============
      * 
      * ShapeTool code
@@ -140,22 +172,25 @@ class ContextDrawingTool implements GraphicTool, ShapeTool, PathTool
     @Override
     public void applyPath(Path path, Transform transform)
     {
-        // TODO Auto-generated method stub
-        
+        context.save();
+        transform.applyTransform(this);
+        path.applyPath(this);
+        context.restore();
     }
 
     @Override
     public void applyShape(Shape shape)
     {
-        // TODO Auto-generated method stub
-        
+        shape.applyShape(this);
     }
 
     @Override
     public void applyShape(Shape shape, Transform transform)
     {
-        // TODO Auto-generated method stub
-        
+        context.save();
+        transform.applyTransform(this);
+        shape.applyShape(this);
+        context.restore();
     }
 
     /*============
@@ -167,22 +202,19 @@ class ContextDrawingTool implements GraphicTool, ShapeTool, PathTool
     @Override
     public void arc(double x, double y, double radius, double startAngle, double endAngle, boolean anticlockwise)
     {
-        // TODO Auto-generated method stub
-        
+        context.arc(x, y, radius, startAngle, endAngle, anticlockwise);
     }
 
     @Override
     public void arcTo(double x1, double y1, double x2, double y2, double radius)
     {
-        // TODO Auto-generated method stub
-        
+        context.arcTo(x1, y1, x2, y2, radius);
     }
 
     @Override
     public void bezierCurveTo(double cp1x, double cp1y, double cp2x, double cp2y, double x, double y)
     {
-        // TODO Auto-generated method stub
-        
+        context.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y);
     }
 
     @Override
@@ -200,16 +232,67 @@ class ContextDrawingTool implements GraphicTool, ShapeTool, PathTool
     @Override
     public void quadraticCurveTo(double cpx, double cpy, double x, double y)
     {
-        // TODO Auto-generated method stub
-        
+        context.quadraticCurveTo(cpx, cpy, x, y);
     }
 
     @Override
     public void rect(double x, double y, double width, double height)
     {
+        context.rect(x, y, width, height);
+    }
+
+    /*============
+     * 
+     * TransformTool code
+     * 
+     ==========*/
+
+    @Override
+    public void rotate(double rotations)
+    {
         // TODO Auto-generated method stub
         
     }
 
+    @Override
+    public void rotateDegrees(double degrees)
+    {
+        // TODO Auto-generated method stub
+        
+    }
 
+    @Override
+    public void rotateRadians(double angle)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void scale(double x, double y)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void scale(double size)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void transform(double m11, double m12, double m21, double m22, double dx, double dy)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void translate(double x, double y)
+    {
+        // TODO Auto-generated method stub
+        
+    }
 }

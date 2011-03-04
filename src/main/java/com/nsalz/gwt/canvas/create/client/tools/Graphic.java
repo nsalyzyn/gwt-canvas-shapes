@@ -15,11 +15,11 @@ public interface Graphic
         public void applyTransform(Transform transform);
 
         public void setTextAttributes(TextAttributes attributes);
-        
+
         public void setFillStyle(FillStyle fillStyle);
-        
+
         public void setLineStyle(LineStyle lineStyle);
-        
+
         public void setShadowAttributes(ShadowAttributes attributes);
 
         /**
@@ -28,14 +28,34 @@ public interface Graphic
          */
         public void revertAttributes();
 
-        public void fillShape(Shape shape);
+        /**
+         * Fill using the same transform as the shape
+         */
+        public void fill(Shape shape);
 
-        public void fillText(String text);
+        public void fill(String text);
 
-        public void strokeShape(Shape shape);
+        /**
+         * Fill using the the new transform
+         */
+        public void fill(Shape shape, Transform transform);
 
-        public void strokeText(String text);
-        
+        public void fillWithBaseTransform(Shape shape);
+
+        /**
+         * Stroke using the same transform as the shape
+         */
+        public void stroke(Shape shape);
+
+        public void stroke(String text);
+
+        /**
+         * Stroke using the the new transform
+         */
+        public void stroke(Shape shape, Transform transform);
+
+        public void strokeWithBaseTransform(Shape shape);
+
         public void drawImage(CanvasImage image);
     }
 }

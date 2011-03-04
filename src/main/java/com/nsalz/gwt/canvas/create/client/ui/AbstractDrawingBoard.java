@@ -50,6 +50,12 @@ abstract class AbstractDrawingBoard extends ContextDrawingTool implements Drawin
     {
         graphics.add(graphic);
     }
+    
+    @Override
+    public List<Graphic> getGraphicList()
+    {
+        return graphics;
+    }
 
     @Override
     public void repaint()

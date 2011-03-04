@@ -4,11 +4,15 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.event.logical.shared.HasResizeHandlers;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.RequiresResize;
 import com.nsalz.gwt.canvas.create.client.tools.DrawingBoard;
 
-public class ShapeCanvas extends FocusWidget implements RequiresResize
+public class ShapeCanvas extends FocusWidget implements RequiresResize, HasResizeHandlers
 {
     private static CanvasElementSupportDetector detector;
 
@@ -77,8 +81,15 @@ public class ShapeCanvas extends FocusWidget implements RequiresResize
         getCanvasElement().setWidth(x);
         getCanvasElement().setHeight(y);
         drawingBoard.onResize();
+        ResizeEvent.fire(this, x, y);
     }
-    
+
+    @Override
+    public HandlerRegistration addResizeHandler(ResizeHandler handler)
+    {
+        return addHandler(handler, ResizeEvent.getType());
+    }
+
     @Override
     public void setWidth(String width)
     {
