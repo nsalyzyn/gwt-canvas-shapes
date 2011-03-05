@@ -5,15 +5,15 @@ import java.util.List;
 
 import com.google.gwt.user.client.Command;
 import com.nsalz.gwt.canvas.create.client.FrameRateScheduler;
-import com.nsalz.gwt.canvas.create.client.tools.DrawingBoard;
+import com.nsalz.gwt.canvas.create.client.tools.DrawingLayer;
 import com.nsalz.gwt.canvas.create.client.tools.Graphic;
 import com.nsalz.gwt.canvas.create.client.tools.Shape;
 import com.nsalz.gwt.canvas.create.client.tools.Transform;
 
-abstract class AbstractDrawingBoard extends ContextDrawingTool implements DrawingBoard
+abstract class AbstractDrawingLayer<T extends Graphic> extends ContextDrawingTool implements DrawingLayer<T>
 {
-    private final List<Graphic> graphics = new ArrayList<Graphic>();
-    private final List<AbstractDrawingBoard> childDrawingBoards = new ArrayList<AbstractDrawingBoard>();
+    private final List<T> graphics = new ArrayList<T>();
+    private final List<AbstractDrawingLayer<T>> childLayers = new ArrayList<AbstractDrawingLayer<T>>();
     private final Command repaintCommand = new Command(){
         @Override
         public void execute()
@@ -22,37 +22,37 @@ abstract class AbstractDrawingBoard extends ContextDrawingTool implements Drawin
         }
     };
     
-    public AbstractDrawingBoard(Context2d context)
+    public AbstractDrawingLayer(Context2d context)
     {
         super(context);
     }
     
     @Override
-    public DrawingBoard createChildDrawingBoard()
+    public DrawingLayer<T> createChildDrawingLayer()
     {
-        return addDrawingBoard(new ChildDrawingBoard(this));
+        return addLayer(new ChildDrawingLayer<T>(this));
     }
 
     @Override
-    public DrawingBoard createChildDrawingBoard(Shape shape)
+    public DrawingLayer<T> createChildDrawingLayer(Shape shape)
     {
-        return addDrawingBoard(new ChildDrawingBoard.ShapedDrawingBoard(this, shape));
+        return addLayer(new ChildDrawingLayer.ShapedLayer<T>(this, shape));
     }
 
     @Override
-    public DrawingBoard createChildDrawingBoard(Transform transform)
+    public DrawingLayer<T> createChildDrawingLayer(Transform transform)
     {
-        return addDrawingBoard(new ChildDrawingBoard.TransformedDrawingBoard(this, transform));
+        return addLayer(new ChildDrawingLayer.TransformedLayer<T>(this, transform));
     }
     
     @Override
-    public void addGraphic(Graphic graphic)
+    public void addGraphic(T graphic)
     {
         graphics.add(graphic);
     }
     
     @Override
-    public List<Graphic> getGraphicList()
+    public List<T> getGraphicList()
     {
         return graphics;
     }
@@ -70,8 +70,8 @@ abstract class AbstractDrawingBoard extends ContextDrawingTool implements Drawin
             graphic.draw(this);
             getContext().restore();
         }
-        for (AbstractDrawingBoard drawingBoard : childDrawingBoards) {
-            drawingBoard.doRepaint();
+        for (AbstractDrawingLayer<T> layer : childLayers) {
+            layer.doRepaint();
         }
     }
 
@@ -81,10 +81,10 @@ abstract class AbstractDrawingBoard extends ContextDrawingTool implements Drawin
         repaint();
     }
 
-    private DrawingBoard addDrawingBoard(AbstractDrawingBoard drawingBoard)
+    private DrawingLayer<T> addLayer(AbstractDrawingLayer<T> layer)
     {
-        childDrawingBoards.add(drawingBoard);
-        return drawingBoard;
+        childLayers.add(layer);
+        return layer;
     }
 
 

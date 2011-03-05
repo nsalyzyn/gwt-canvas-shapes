@@ -1,19 +1,20 @@
 package com.nsalz.gwt.canvas.create.client.ui;
 
-import com.nsalz.gwt.canvas.create.client.tools.DrawingBoard;
+import com.nsalz.gwt.canvas.create.client.tools.DrawingLayer;
+import com.nsalz.gwt.canvas.create.client.tools.Graphic;
 
-class CanvasDrawingBoard extends AbstractDrawingBoard
+class CanvasDrawingLayer<T extends Graphic> extends AbstractDrawingLayer<T>
 {
     private final CanvasElement canvasElement;
 
-    public CanvasDrawingBoard(CanvasElement canvasElement)
+    public CanvasDrawingLayer(CanvasElement canvasElement)
     {
         super(canvasElement.getContext2d());
         this.canvasElement = canvasElement;
     }
     
     @Override
-    public DrawingBoard getParentDrawingBoard()
+    public DrawingLayer<T> getParentDrawingLayer()
     {
         return null;
     }

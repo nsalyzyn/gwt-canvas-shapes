@@ -4,30 +4,30 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.RequiresResize;
 
-public interface DrawingBoard extends RequiresResize
+public interface DrawingLayer<T extends Graphic> extends RequiresResize
 {
     public void repaint();
 
     public boolean isPointIncluded(int x, int y);
 
-    public DrawingBoard getParentDrawingBoard();
+    public DrawingLayer<T> getParentDrawingLayer();
 
     /**
-     * This function could be useful if you are using the DrawingBoards to group
+     * This function could be useful if you are using the DrawingLayer classes to group
      * shapes and you want to have some layers.
      */
-    public DrawingBoard createChildDrawingBoard();
+    public DrawingLayer<T> createChildDrawingLayer();
 
-    public DrawingBoard createChildDrawingBoard(Shape shape);
+    public DrawingLayer<T> createChildDrawingLayer(Shape shape);
 
-    public DrawingBoard createChildDrawingBoard(Transform transform);
+    public DrawingLayer<T> createChildDrawingLayer(Transform transform);
 
-    public void addGraphic(Graphic graphic);
+    public void addGraphic(T graphic);
 
     /**
      * This returns a live list of graphic objects for this drawing object. This
      * will allow you to do whatever rearranging, removing and adjusting you
      * might need to do.
      */
-    public List<Graphic> getGraphicList();
+    public List<T> getGraphicList();
 }

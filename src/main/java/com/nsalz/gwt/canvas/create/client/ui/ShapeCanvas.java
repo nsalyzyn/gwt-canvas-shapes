@@ -10,9 +10,10 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.RequiresResize;
-import com.nsalz.gwt.canvas.create.client.tools.DrawingBoard;
+import com.nsalz.gwt.canvas.create.client.tools.DrawingLayer;
+import com.nsalz.gwt.canvas.create.client.tools.Graphic;
 
-public class ShapeCanvas extends FocusWidget implements RequiresResize, HasResizeHandlers
+public class ShapeCanvas<T extends Graphic> extends FocusWidget implements RequiresResize, HasResizeHandlers
 {
     private static CanvasElementSupportDetector detector;
 
@@ -21,7 +22,7 @@ public class ShapeCanvas extends FocusWidget implements RequiresResize, HasResiz
      * 
      * @return a new {@link Canvas} if supported, and null otherwise
      */
-    public static ShapeCanvas createIfSupported()
+    public static <T extends Graphic> ShapeCanvas<T> createIfSupported()
     {
         if (detector == null) {
             detector = GWT.create(CanvasElementSupportDetector.class);
@@ -33,7 +34,7 @@ public class ShapeCanvas extends FocusWidget implements RequiresResize, HasResiz
         if (!CanvasElementSupportDetector.isSupportedRunTime(element)) {
             return null;
         }
-        return new ShapeCanvas(element);
+        return new ShapeCanvas<T>(element);
     }
 
     /**
@@ -57,7 +58,7 @@ public class ShapeCanvas extends FocusWidget implements RequiresResize, HasResiz
         return true;
     }
     
-    private CanvasDrawingBoard drawingBoard;
+    private CanvasDrawingLayer<T> layer;
 
     /**
      * Protected constructor. Use {@link #createIfSupported()} to create a
@@ -66,12 +67,12 @@ public class ShapeCanvas extends FocusWidget implements RequiresResize, HasResiz
     private ShapeCanvas(CanvasElement element)
     {
         setElement(element);
-        drawingBoard = new CanvasDrawingBoard(getCanvasElement());        
+        layer = new CanvasDrawingLayer<T>(getCanvasElement());        
     }
     
-    public DrawingBoard getDrawingBoard()
+    public DrawingLayer<T> getDrawingLayer()
     {
-        return drawingBoard;
+        return layer;
     }
     
     @Override
@@ -80,7 +81,7 @@ public class ShapeCanvas extends FocusWidget implements RequiresResize, HasResiz
         int y = getOffsetHeight();
         getCanvasElement().setWidth(x);
         getCanvasElement().setHeight(y);
-        drawingBoard.onResize();
+        layer.onResize();
         ResizeEvent.fire(this, x, y);
     }
 
