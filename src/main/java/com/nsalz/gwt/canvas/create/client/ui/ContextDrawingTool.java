@@ -1,14 +1,16 @@
 package com.nsalz.gwt.canvas.create.client.ui;
 
 import com.nsalz.gwt.canvas.create.client.tools.CanvasImage;
+import com.nsalz.gwt.canvas.create.client.tools.Fill;
 import com.nsalz.gwt.canvas.create.client.tools.FillStyle;
 import com.nsalz.gwt.canvas.create.client.tools.LineStyle;
 import com.nsalz.gwt.canvas.create.client.tools.Path;
 import com.nsalz.gwt.canvas.create.client.tools.ShadowAttributes;
 import com.nsalz.gwt.canvas.create.client.tools.Shape;
+import com.nsalz.gwt.canvas.create.client.tools.Stroke;
 import com.nsalz.gwt.canvas.create.client.tools.TextAttributes;
+import com.nsalz.gwt.canvas.create.client.tools.TextDraw;
 import com.nsalz.gwt.canvas.create.client.tools.Transform;
-import com.nsalz.gwt.canvas.create.client.tools.Graphic.CompositeOperation;
 import com.nsalz.gwt.canvas.create.client.tools.Graphic.GraphicTool;
 import com.nsalz.gwt.canvas.create.client.tools.Path.PathTool;
 import com.nsalz.gwt.canvas.create.client.tools.Shape.ShapeTool;
@@ -35,13 +37,6 @@ class ContextDrawingTool implements GraphicTool, ShapeTool, PathTool, TransformT
      ==========*/
     
     @Override
-    public void applyTransform(Transform transform)
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
     public void drawImage(CanvasImage image)
     {
         // TODO Auto-generated method stub
@@ -49,113 +44,85 @@ class ContextDrawingTool implements GraphicTool, ShapeTool, PathTool, TransformT
     }
 
     @Override
-    public void fill(Shape shape)
+    public void drawImage(CanvasImage image, Transform transform)
     {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void fill(String text)
+    public void fill(Shape shape, Fill fill)
     {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void revertAttributes()
+    public void fill(Shape shape, Transform shapeTransform, Fill fill)
     {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void setAlpha(double alpha)
+    public void fill(Shape shape, Transform shapeTransform, Fill fill, Transform fillTransform)
     {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void setCompositeOperation(CompositeOperation operation)
+    public void fill(TextDraw text, Fill fill)
     {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void setFillStyle(FillStyle fillStyle)
+    public void fill(TextDraw text, Fill fill, Transform textFillTransform)
     {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void setLineStyle(LineStyle lineStyle)
+    public void stroke(Shape shape, Stroke stroke)
     {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void setShadowAttributes(ShadowAttributes attributes)
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void setTextAttributes(TextAttributes attributes)
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void stroke(Shape shape)
-    {
+        context.save();
         context.beginPath();
         shape.applyShape(this);
+        applyStroke(stroke);
         context.stroke();
+        context.restore();
     }
 
     @Override
-    public void stroke(String text)
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-
-    @Override
-    public void fill(Shape shape, Transform transform)
+    public void stroke(Shape shape, Transform shapeTransform, Stroke stroke)
     {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void fillWithBaseTransform(Shape shape)
+    public void stroke(Shape shape, Transform shapeTransform, Stroke stroke, Transform strokeTransform)
     {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void stroke(Shape shape, Transform transform)
+    public void stroke(String text, Stroke stroke)
     {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void strokeWithBaseTransform(Shape shape)
+    public void stroke(String text, Stroke stroke, Transform textStrokeTransform)
     {
         // TODO Auto-generated method stub
         
     }
-
-
 
     /*============
      * 
@@ -271,15 +238,13 @@ class ContextDrawingTool implements GraphicTool, ShapeTool, PathTool, TransformT
     @Override
     public void scale(double x, double y)
     {
-        // TODO Auto-generated method stub
-        
+        context.scale(x, y);
     }
 
     @Override
     public void scale(double size)
     {
-        // TODO Auto-generated method stub
-        
+        scale(size, size);
     }
 
     @Override
@@ -294,5 +259,18 @@ class ContextDrawingTool implements GraphicTool, ShapeTool, PathTool, TransformT
     {
         // TODO Auto-generated method stub
         
+    }
+
+    private void applyStroke(Stroke stroke)
+    {
+        context.setGlobalAlpha(stroke.getAlpha());
+        context.setGlobalCompositeOperation(stroke.getCompositeOperation().getValue());
+        context.setLineCap(stroke.getLineStyle().getCap().getValue());
+        context.setLineJoin(stroke.getLineStyle().getJoin().getValue());
+        context.setLineWidth(stroke.getLineStyle().getWidth());
+        context.setShadowOffsetX(stroke.getShadowAttributes().getOffsetX());
+        context.setShadowOffsetY(stroke.getShadowAttributes().getOffsetY());
+        context.setShadowBlur(stroke.getShadowAttributes().getBlur());
+        context.setShadowColor(stroke.getShadowAttributes().getColor());
     }
 }

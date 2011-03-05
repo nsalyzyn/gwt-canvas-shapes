@@ -37,7 +37,16 @@ class ChildDrawingLayer<T extends Graphic> extends AbstractDrawingLayer<T>
             this.shape = shape;
         }
 
-        // TODO do clip action
+        @Override
+        protected void doRepaint()
+        {
+            getContext().save();
+            getContext().beginPath();
+            shape.applyShape(this);
+            getContext().clip();
+            super.doRepaint();
+            getContext().restore();
+        }
     }
 
     public static class TransformedLayer<T extends Graphic> extends ChildDrawingLayer<T>
@@ -50,6 +59,13 @@ class ChildDrawingLayer<T extends Graphic> extends AbstractDrawingLayer<T>
             this.transform = transform;
         }
 
-        // TODO do transform action
+        @Override
+        protected void doRepaint()
+        {
+            getContext().save();
+            transform.applyTransform(this);
+            super.doRepaint();
+            getContext().restore();
+        }
     }
 }

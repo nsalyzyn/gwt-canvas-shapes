@@ -2,60 +2,32 @@ package com.nsalz.gwt.canvas.create.client.tools;
 
 public interface Graphic
 {
-    public enum CompositeOperation {}
-
     public void draw(GraphicTool tool);
 
     public interface GraphicTool
     {
-        public void setAlpha(double alpha);
+        public void fill(Shape shape, Fill fill);
 
-        public void setCompositeOperation(CompositeOperation operation);
+        public void fill(Shape shape, Transform shapeTransform, Fill fill);
 
-        public void applyTransform(Transform transform);
+        public void fill(Shape shape, Transform shapeTransform, Fill fill, Transform fillTransform);
 
-        public void setTextAttributes(TextAttributes attributes);
+        public void fill(TextDraw text, Fill fill);
 
-        public void setFillStyle(FillStyle fillStyle);
+        public void fill(TextDraw text, Fill fill, Transform textFillTransform);
 
-        public void setLineStyle(LineStyle lineStyle);
+        public void stroke(Shape shape, Stroke stroke);
 
-        public void setShadowAttributes(ShadowAttributes attributes);
+        public void stroke(Shape shape, Transform shapeTransform, Stroke stroke);
 
-        /**
-         * Remove all transforms and other settings performed during this draw
-         * operation.
-         */
-        public void revertAttributes();
+        public void stroke(Shape shape, Transform shapeTransform, Stroke stroke, Transform strokeTransform);
 
-        /**
-         * Fill using the same transform as the shape
-         */
-        public void fill(Shape shape);
+        public void stroke(String text, Stroke stroke);
 
-        public void fill(String text);
-
-        /**
-         * Fill using the the new transform
-         */
-        public void fill(Shape shape, Transform transform);
-
-        public void fillWithBaseTransform(Shape shape);
-
-        /**
-         * Stroke using the same transform as the shape
-         */
-        public void stroke(Shape shape);
-
-        public void stroke(String text);
-
-        /**
-         * Stroke using the the new transform
-         */
-        public void stroke(Shape shape, Transform transform);
-
-        public void strokeWithBaseTransform(Shape shape);
+        public void stroke(String text, Stroke stroke, Transform textStrokeTransform);
 
         public void drawImage(CanvasImage image);
+
+        public void drawImage(CanvasImage image, Transform transform);
     }
 }
