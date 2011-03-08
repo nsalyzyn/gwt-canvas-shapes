@@ -1,22 +1,23 @@
 package com.nsalz.gwt.canvas.create.client.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+
+import com.google.gwt.user.client.Command;
 import com.nsalz.gwt.canvas.create.client.tools.CanvasImage;
 import com.nsalz.gwt.canvas.create.client.tools.Fill;
-import com.nsalz.gwt.canvas.create.client.tools.FillStyle;
-import com.nsalz.gwt.canvas.create.client.tools.LineStyle;
 import com.nsalz.gwt.canvas.create.client.tools.Path;
-import com.nsalz.gwt.canvas.create.client.tools.ShadowAttributes;
 import com.nsalz.gwt.canvas.create.client.tools.Shape;
 import com.nsalz.gwt.canvas.create.client.tools.Stroke;
-import com.nsalz.gwt.canvas.create.client.tools.TextAttributes;
 import com.nsalz.gwt.canvas.create.client.tools.TextDraw;
 import com.nsalz.gwt.canvas.create.client.tools.Transform;
 import com.nsalz.gwt.canvas.create.client.tools.Graphic.GraphicTool;
 import com.nsalz.gwt.canvas.create.client.tools.Path.PathTool;
 import com.nsalz.gwt.canvas.create.client.tools.Shape.ShapeTool;
-import com.nsalz.gwt.canvas.create.client.tools.Transform.TransformTool;
+import com.nsalz.gwt.canvas.create.client.tools.Transform.FullTransformTool;
 
-class ContextDrawingTool implements GraphicTool, ShapeTool, PathTool, TransformTool
+class ContextDrawingTool implements GraphicTool, ShapeTool, PathTool, FullTransformTool
 {
     private final Context2d context;
 
@@ -140,7 +141,7 @@ class ContextDrawingTool implements GraphicTool, ShapeTool, PathTool, TransformT
     public void applyPath(Path path, Transform transform)
     {
         context.save();
-        transform.applyTransform(this);
+        transform.doTransform(this);
         path.applyPath(this);
         context.restore();
     }
@@ -155,7 +156,7 @@ class ContextDrawingTool implements GraphicTool, ShapeTool, PathTool, TransformT
     public void applyShape(Shape shape, Transform transform)
     {
         context.save();
-        transform.applyTransform(this);
+        transform.doTransform(this);
         shape.applyShape(this);
         context.restore();
     }
@@ -210,35 +211,64 @@ class ContextDrawingTool implements GraphicTool, ShapeTool, PathTool, TransformT
 
     /*============
      * 
-     * TransformTool code
+     * FullTransformTool code
      * 
      ==========*/
+    private int transformDepth = 0;
+    private List<Command> transformActions = new ArrayList<Command>();
+
+    @Override
+    public void startTransform()
+    {
+        transformDepth++;
+    }
+
+    @Override
+    public void endTransform()
+    {
+        transformDepth--;
+        if (transformDepth == 0) {
+            for (ListIterator<Command> iterator = transformActions.listIterator(transformActions.size()); iterator.hasPrevious();) {
+                iterator.previous().execute();
+            }
+            transformActions.clear();
+        }
+    }
 
     @Override
     public void rotate(double rotations)
     {
-        // TODO Auto-generated method stub
-        
+        rotateRadians(rotations * Math.PI * 2);
     }
 
     @Override
     public void rotateDegrees(double degrees)
     {
-        // TODO Auto-generated method stub
-        
+        rotateRadians(degrees * Math.PI / 180);
     }
 
     @Override
-    public void rotateRadians(double angle)
+    public void rotateRadians(final double angle)
     {
-        // TODO Auto-generated method stub
-        
+        transformActions.add(new Command(){
+            @Override
+           public void execute()
+           {
+               context.rotate(angle);
+           }
+       });
     }
 
     @Override
-    public void scale(double x, double y)
+    public void scale(final double x, final double y)
     {
-        context.scale(x, y);
+        transformActions.add(new Command(){
+            @Override
+            public void execute()
+            {
+                context.scale(x, y);
+            }
+        });
     }
 
     @Override
@@ -248,17 +278,27 @@ class ContextDrawingTool implements GraphicTool, ShapeTool, PathTool, TransformT
     }
 
     @Override
-    public void transform(double m11, double m12, double m21, double m22, double dx, double dy)
+    public void transform(final double m11, final double m12, final double m21, final double m22, final double dx, final double dy)
     {
-        // TODO Auto-generated method stub
-        
+        transformActions.add(new Command(){
+            @Override
+            public void execute()
+            {
+                context.transform(m11, m12, m21, m22, dx, dy);
+            }
+        });
     }
 
     @Override
-    public void translate(double x, double y)
+    public void translate(final double x, final double y)
     {
-        // TODO Auto-generated method stub
-        
+        transformActions.add(new Command(){
+            @Override
+            public void execute()
+            {
+                context.translate(x, y);
+            }
+        });
     }
 
     private void applyStroke(Stroke stroke)

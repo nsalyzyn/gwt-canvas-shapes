@@ -63,7 +63,7 @@ class ChildDrawingLayer<T extends Graphic> extends AbstractDrawingLayer<T>
         protected void doRepaint()
         {
             getContext().save();
-            transform.applyTransform(this);
+            transform.doTransform(this);
             super.doRepaint();
             getContext().restore();
         }

@@ -1,8 +1,8 @@
 package com.nsalz.gwt.canvas.create.client.tools;
 
-public interface Transform
+public abstract class Transform
 {
-    public void applyTransform(TransformTool transformTool);
+    public abstract void applyTransform(TransformTool transformTool);
 
     /**
      * Applies the transforms in logical order, not necessarily in the order
@@ -28,5 +28,19 @@ public interface Transform
         public void translate(double x, double y);
 
         public void transform(double m11, double m12, double m21, double m22, double dx, double dy);
+    }
+
+    public final void doTransform(FullTransformTool transformTool)
+    {
+        transformTool.startTransform();
+        applyTransform(transformTool);
+        transformTool.endTransform();
+    }
+    
+    public interface FullTransformTool extends TransformTool
+    {
+        public void startTransform();
+        
+        public void endTransform();
     }
 }
